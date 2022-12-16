@@ -56,7 +56,7 @@ setTotal(totalHits);
 
   const handleOnSubmit= (searchInput)=> {
    setSearchInput(searchInput);
-   setImages ([]);
+  //  setImages ([]);
    setPage(1);
   };
 
