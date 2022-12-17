@@ -51,21 +51,16 @@ export function App() {
   
 
 
-
-  const handleOnSubmit = searchInput => {
-   setSearchInput(searchInput);
-   setPage(1);
-   setImages([]);
-   setError(null);
-
-   if (setSearchInput === searchInput) 
-
-   return Notiflix.Notify.warning(
-     'Sorry, there are no images matching your search query. Please try again.'
-   );
-   
-};
-
+  const handleOnSubmit = data => {
+    if (data === searchInput) {
+      return Notiflix.Notify.warning(
+         'Sorry, repeated request. Please try again'
+          );
+    }
+    setSearchInput(data);
+    setPage(1);
+    setImages([]);
+  }
 
 
   const openModal = e => {
