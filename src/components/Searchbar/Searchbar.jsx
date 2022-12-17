@@ -3,6 +3,7 @@ import css from './Searchbar.module.css';
 import { MdSavedSearch } from 'react-icons/md';
 import React  from 'react';
 import { useState } from 'react';
+import Notiflix from 'notiflix';
 
 export default function Searchbar ({ onSubmit }) {
 
@@ -16,6 +17,7 @@ export default function Searchbar ({ onSubmit }) {
   const handleSubmit = e => {
     e.preventDefault();
  if (searchInput.trim() === '') {
+  Notiflix.Notify.warning(`Specify the request`);
       return;
     }
     onSubmit(searchInput);

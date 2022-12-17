@@ -18,5 +18,9 @@ export default function ImageGalleryItem({ image, openModal }) {
 
 ImageGalleryItem.propTypes = {
   image: PropTypes.object.isRequired,
+  webformatURL: PropTypes.string,
+  tags: PropTypes.string,
+  largeImageURL: PropTypes.string,
   openModal: PropTypes.func.isRequired,
 }
+

@@ -9,7 +9,7 @@ import Modal from './Modal';
 import css from './App.module.css';
 import { useState, useEffect } from 'react';
 
-export function App () {
+export function App() {
 
   const [images, setImages] = useState ([]);
   const [isLoading, setIsLoading] = useState (false);
@@ -23,43 +23,54 @@ export function App () {
 
 useEffect (()=> {
   if(!searchInput) return
-  setIsLoading(true);
-  fetchImages(searchInput, page)
- .then(({ hits, totalHits }) => {
-  if (hits.length === 0) {
-  return  Notiflix.Notify.warning(
-    'Sorry, there are no images matching your search query. Please try again.'
-  );
-}
+  getImages(searchInput, page)
+}, [searchInput, page]);
 
-if (page === 1) {
-  Notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
-}
 
-const arrayImages = hits.map(({id, webformatURL, largeImageURL, tags }) => {
-  return {
-    id,
-    webformatURL,
-    largeImageURL,
-    tags,
+  const getImages = (searchInput, page) => {
+      setIsLoading(true);
+
+      fetchImages(searchInput, page)
+    .then(({ hits, totalHits }) => {
+
+      const arrayImages = hits.map(({ id, webformatURL, largeImageURL, tags }) => {
+        return {
+          id,
+          webformatURL,
+          largeImageURL,
+          tags,
+        };
+      });
+
+      setImages(images => [...images, ...arrayImages]);
+      setTotal(totalHits);
+    
+      if (hits.length === 0) {
+      return  Notiflix.Notify.warning(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
+    }
+    
+    if (page === 1) {
+      Notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
+    }
+  })
+    
+    .catch(error => setError(error))
+    .finally(() => setIsLoading(false));
+  
   };
-});
-
-setImages(images => [...images, ...arrayImages]);
-setTotal(totalHits);
-})
-.catch(error => setError(error))
-.finally(() => setIsLoading(false));
-}, [page, searchInput])
+ 
 
 
 
-  const handleOnSubmit= (searchInput)=> {
+  const handleOnSubmit= searchInput => {
    setSearchInput(searchInput);
    setPage(1);
-  };
+   setImages([]);
+   setError(null);
+};
 
- 
   const openModal = e => {
     setLargeImageURL(e.target.dataset.large);
     setTags(e.target.alt);
@@ -68,7 +79,7 @@ setTotal(totalHits);
 
 
   const showImages  = () => {
-    setPage((page)=>page + 1)
+    setPage(page=>page + 1)
   };
 
   const toggleModal = () => {
@@ -94,6 +105,6 @@ setTotal(totalHits);
 
     </div>
     );
-  }
+  };
 
 
